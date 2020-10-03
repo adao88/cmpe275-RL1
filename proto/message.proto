@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package grpc;
+
+message Empty {}
+
+message Post {
+    string name = 1;
+    string message = 2;
+}
+
+/*
+message ClientId {
+    int32 id = 1;
+}
+*/
+message PostReply {
+    string message = 1;
+}
+
+
+service Messenger {
+    //rpc message(Post) returns (PostReply)
+    rpc ChatStream (Empty) returns (stream Post);
+    rpc SendPost (Post) returns (PostReply);
+};
+
+//python3 -m grpc_tools.protoc -I./proto --python_out=. --grpc_python_out=. ./proto/message.proto
