@@ -1,5 +1,8 @@
 # cmpe275-RL1
 
+Set up:
+pip3 install --upgrade google-api-python-client, grpcio
+
 Client.py:
 takes in (1)number argument for how many random strings/message to be sent to server
 
