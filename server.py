@@ -39,20 +39,26 @@ class ChatServer(rpc.MessengerServicer):
             """
 
     def SendPost(self, request, context):
-        print("[{}] {}".format(request.name, request.message))
+        # print("[{}] {}".format(request.name, request.message))
         # Add it to the chat history
         self.chats.append(request.message)
-        self.q.put(request.message)
-        print('message: ', request.message)
-        return message.PostReply(message='message received')  # something needs to be returned required by protobuf language, we just return empty msg
+        self.q.put(f'{request.message}')
+        # print('message sent: ', request.message)
+        # if request.message == 'done': print(f'')
+        return message.PostReply(message='Server: message received')  # something needs to be returned required by protobuf language, we just return empty msg
+
+
 
 if __name__ == '__main__':
     q_size = int(sys.argv[1])
+    workers = int(sys.argv[2])
+    # q_size = 1024
+    # workers = 10
     q = Queue(q_size)
     port = 11912  # a random port for the server to run on
     # the workers is like the amount of threads that can be opened at the same time, when there are 10 clients connected
     # then no more clients able to connect to the server.
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))  # create a gRPC server
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=workers))  # create a gRPC server
     rpc.add_MessengerServicer_to_server(ChatServer(q), server)  # register the server to gRPC
     # gRPC basically manages all the threading and server responding logic, which is perfect!
     print('Starting server. Listening...')

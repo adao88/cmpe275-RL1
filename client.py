@@ -35,15 +35,15 @@ class Client:
         #post = input('Send: \n')
         n = message.Post(name='An', message=word)
         response = self.conn.SendPost(n)
-        print(response.message)
+        # print(response.message)
 
-def run(count):
+def run(count, length):
     
     c = Client('Test')
     
-    for _ in range(count):
-        c.send_message(get_random_string())
-    c.send_message('done')   
+    for i in range(count):
+        c.send_message(get_random_string(length))
+    c.send_message('<>')
 
 def get_random_string(length = 15):
     letters = string.ascii_lowercase
@@ -52,4 +52,7 @@ def get_random_string(length = 15):
 
 if __name__ == '__main__':
     count = int(sys.argv[1])
-    run(count)
+    length = int(sys.argv[2])
+    # count=100
+    # length = 20
+    run(count,length)
